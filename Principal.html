@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="Inicial.css" rel="stylesheet" >
+    <link rel="stylesheet" href="https://css/style.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.13/dist/jspdf.plugin.autotable.js"></script>
+
+    <title>Music Proove</title>
+
+</head>
+<body onload="AlCargar()">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.13/dist/jspdf.plugin.autotable.js"></script>
+    <!-- header -->
+    <div class="container-fluid header">
+        <header id="header">
+			 Admin's Playlist
+		</header>
+    </div>
+    <!-- end header -->
+
+    <!-- menu navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto col-sm-10 col-md-10">
+            <li class="nav-item active">
+              <a onclick="Home()" class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a onclick="MostrarUsuarios()" class="nav-link" href="#Usuarios">Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a onclick="MostrarCanciones()" class="nav-link" href="#">Canciones</a>
+            </li>
+            <li class="nav-item">
+              <a id="lata" onclick="MostrarSolicitudes()" class="nav-link" href="#">Solicitudes</a>
+            </li>
+            <li class="nav-item">
+              <a onclick="SolicitarCancion()" class="nav-link" href="#"> Solicitar Cancion</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <button onclick = "Deslogearse()" class="btn btn-secondary my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginModal">Sign Off</button>
+          </form>
+        </div>
+    </nav>
+    <!-- end navbar -->
+
+    
+
+    <!-- content -->
+    <div class="container-fluid">
+        <div class="content row">
+			
+			
+			
+        <p id="boton" class="col-md text-center" > </p>
+        <p id="seleccionar" class="col-md-8 text-center" > </p>
+      
+        <table id="table" class="table">
+          <thead id="thead">
+          </thead>
+
+          <tbody id="tbody">
+          </tbody>
+        </table>
+        <p id="penultimop" class="col-md text-center"></p>
+        <p id="ultimop" class="col-md text-center"></p>
+      
+        </div>
+    </div>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  
+
+
+<script>
+
+  function Home(){
+    var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  boton.innerHTML=""
+  seleccionar.innerHTML=""
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  }
+
+  function AlCargar(){
+    //Tambien recordate que al hacer carga masiva, se cambio por ; y no ,
+   // if(sessionStorage.tipo == "administrador"){
+
+   // }else{
+     // location.href="PrincipalC.html"
+    //}
+  }
+
+function MostrarPerfil(){
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  boton.innerHTML="Usuarios Registrados"
+  seleccionar.innerHTML="<button id='' type='button' class='btn btn-success'>Crear Usuario Administrador</button>"
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  fetch('http://127.0.0.1:3000/Personas')
+  .then(response => response.json())
+  .catch(error =>{
+    console.log(error)
+  })
+  .then(res => {
+
+  thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Apellido</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Modificar</center></th>
+      <th scope="col"><center>Eliminar</center></th>
+    </tr>`
+
+    for (var i in res){
+      console.log(res[i])
+      tbody.innerHTML +=
+      `<tr>
+        <th><center>${res[i].name}</center></th>
+        <th><center>${res[i].lastname}</center></th>
+        <th><center>${res[i].username}</center></th>
+        <th><center><button id="${res[i].username}" type="button" onclick="ModificarUsuario(${res[i].username})" class="btn btn-success" > Modificar </button></center></th>
+        <th><center><button id="${res[i].username}" type="button" onclick="EliminarUsuario(${res[i].username})" class="btn btn-success"> Eliminar </button></center></th>
+      </tr>`
+    }
+  })
+
+}
+
+  function MostrarCanciones(){
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  
+  boton.innerHTML = "<input type='file' id='file' /><button id='pdf' type='button' onclick='PDFCanciones()' class='btn btn-success'>Generar PDF</button>" 
+  seleccionar.innerHTML = "<button id='cargar' type='button' onclick='cargarArchivo()' class='btn btn-success'> Cargar Canciones</button>" 
+
+            tbody.innerHTML = ""
+            fetch('http://localhost:3000/Canciones')
+            .then(response => response.json())
+            .catch(error => {
+            console.log(error)
+            })
+            .then(res => {
+              thead.innerHTML=
+              `
+              <tr>
+                <th scope="col"><center>Nombre</center></th>
+                <th scope="col"><center>Artista</center></th>
+                <th scope="col"><center>Album</center></th>
+                <th scope="col"><center>Fecha</center></th>
+                <th scope="col"><center>Imagen</center></th>
+                <th scope="col"><center>Spotify</center></th>
+                <th scope="col"><center>Youtube</center></th>
+              </tr>`
+              //Recorriendo nuestro res e incrementando el innerHTML de nuestro elemento
+              //Identificado como contenido
+            for (var i in res) {
+                console.log(res[i])
+                var letras = res[i].youtube.length
+                var embed=""
+                //console.log(res[i].youtube.charAt(17)+res[i].youtube.charAt(18)+res[i].youtube.charAt(19)+res[i].youtube.charAt(20)+res[i].youtube.charAt(21)+res[i].youtube.charAt(22)+res[i].youtube.charAt(23)+res[i].youtube.charAt(24)+res[i].youtube.charAt(25)+res[i].youtube.charAt(26)+res[i].youtube.charAt(27)+res[i].youtube.charAt(28))
+               // for(var l =17; l < letras;l++){
+                 // embed+=res[i].youtube.charAt(l)
+                //}
+                tbody.innerHTML += 
+                `<tr>
+                <th><center>${res[i].nombre} <br> <a id="${res[i].id}"  value="${res[i].id}" onclick="VerCancion(${res[i].id})" href="#">  Ver Cancion</a></center></th>
+                <th><center>${res[i].artista}</center></th>
+                <th><center>${res[i].album}</center></th>
+                <th><center>${res[i].fecha}</center></th>
+                <th><center><img src="${res[i].imagen}" class="img-fluid" height="50%" width="50%"> </center></th>
+                <th><center><iframe src="${res[i].spotify}" width="130" height="130" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
+                <th><center><a href='${res[i].youtube}'>${res[i].youtube}</a>
+                  <iframe width="460" height="215" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>
+                </tr>`
+                //La imagen, el link de Spotify y el link de Youtube tienen un codigo especifico para agregarse
+                //En este caso solo necesitamos el atributo src de cada uno.
+            }
+            })
+            
+}
+      //Tenemos nuestra funcion de cargarArchivo
+      //Este metodo fue encontrado en internet
+      function cargarArchivo(){
+        //Usamos $(nombre del input donde esta el archivo).parse
+        $('#file').parse({
+      		config: {
+            //Agregamos las configuraciones y le decimos
+            //Quien es el delimitador y que hara luego de leer el archivo
+            //En este caso usamos delimitador "," y que haga el metodo GuardarCanciones
+			     delimiter: ";",
+			     complete: GuardarCanciones,
+		      },
+          //Esto es lo que hara antes de leer el archivo
+      		before: function(file, inputElem)
+      		{
+      			console.log("Parsing file...", file);
+      		},
+          //Esto es lo que hara si encuentra un error
+      		error: function(err, file)
+      		{
+      			console.log("ERROR:", err, file);
+      		},
+          //Esto es lo que hara cuando termina de parsear el archivo
+      		complete: function()
+      		{
+            console.log("Done with all files");
+          }
+        });
+      }
+
+      //En este caso hacemos una funcion, ignoren el async, fueron pruebas mias
+      function GuardarCanciones(results) {
+        //En este caso results es un objeto con nuestros datos parseados
+        //Y el atributo .data es el que tiene lo que necesitamos
+        
+        console.log(results.data)
+        var data = results.data;
+        var val = true
+        //Data al final termina siendo un arreglo de arreglos
+        //data[i] = La fila del archivo csv
+        //data[i][n] = Donde n representa la columan en cuestion
+        //Leemos las filas de data
+        for (i = 0; i < data.length; i++) {
+          //Hacemos el proceso necesarioa para guardar un dato en la API
+            var nombre = data[i][0]
+            var artista = data[i][1]
+            var album = data[i][2]
+            var fecha = data[i][3]
+            var imagen = data[i][4]
+            var spotify = data[i][5]
+            var youtube = data[i][6]
+            var objeto = {
+                'nombre': nombre,
+                'artista': artista,
+                'album': album,
+                'fecha': fecha,
+                'imagen': imagen,
+                'spotify': spotify,
+                'youtube': youtube       
+             }
+            console.log(objeto)
+            //Aplicamos nuestro metodo magico con sus 3 metodos, then, catch, then
+            fetch('http://127.0.0.1:3000/Canciones', {
+            method: 'POST',
+            body: JSON.stringify(objeto),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+            }).then(res => res.json())
+            .catch(error => {
+                console.error('Error:', error)
+                console.log("Ocurrio un error al consumir la API, revise la consola")
+                val = false
+            })
+            .then(response =>{
+                console.log('Success:', response.id);
+            }) 
+            }
+            //En mi caso, como yo lo programe, es que si hay un error a la hora de guardar las canciones
+            //No me muestre nada, pero si las guarda, esto es meramente visual
+            if(val = true)
+            {
+              //Usamos el alert para mandar respuestas del navegador hacia el usuario
+              //Unicamente tenemos que mandar el texto
+                alert("Se agregaron las canciones exitosamente")
+                // Llamamos el metodo para actualizar la tabla
+    			      MostrarCanciones()
+            }
+    }
+
+    function PDFCanciones(){
+      var doc = new jsPDF()
+      doc.text(20, 20, 'Canciones Registradas');
+      var columns = ["ID","Nombre", "Artista", "Album","Fecha"]
+      var columns2 = ["ID","Link de Imagen","Link de Spotify","Link de  Youtube"]
+      var data = []
+      var data2 = []
+
+      fetch('http://localhost:3000/Canciones')
+      .then(response => response.json())
+      .catch(error => {
+      console.log(error)
+      })
+      .then(res => {
+        
+
+        for (var i in res) {
+          var letras = res[i].imagen.length
+          var letrasspotify = res[i].spotify.length
+          var letrasyoutube = res[i].youtube.length
+          var spoty = ""
+          var youtu = ""
+          var embed = ""
+          for(l =0;l<20;l++){
+            embed+=res[i].imagen.charAt(l)
+            spoty+=res[i].spotify.charAt(l)
+            youtu+=res[i].youtube.charAt(l)
+          }
+
+          
+          console.log(res[i])
+          data.push([res[i].id,res[i].nombre,res[i].artista,res[i].album,res[i].fecha])
+          data2.push([res[i].id,res[i].imagen,res[i].spotify,res[i].youtube])
+        }
+        for (var i in data){
+          console.log(data[i])
+        }
+        doc.autoTable(columns,data,{margin:{top:25,left:0,right:0}});
+        doc.autoTable(columns2,data2,{margin:{top:25,left:0,right:0}});
+        doc.save("Canciones.pdf")
+
+            })
+
+    }
+
+  function VerCancion(id){
+    sessionStorage.setItem('id', id)
+      var boton = document.querySelector('#boton')
+      var seleccionar = document.querySelector('#seleccionar')
+      var thead = document.querySelector('#thead')
+      var tbody = document.querySelector('#tbody')
+      var penultimop = document.querySelector('#penultimop')
+      seleccionar.innerHTML=""
+      tbody.innerHTML = ""
+      thead.innerHTML=""
+      penultimop.innerHTML=""
+
+      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      .then(response => response.json())
+      .catch(error => {
+        console.log(error)
+      })
+      .then(res => {
+        fetch(`http://127.0.0.1:3000/Comentarios/${id}`)
+        .then(responsecomment => responsecomment.json())
+        .catch(e => {
+          console.log(e)
+        })
+        .then(rescomment => {
+          thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>ID</center></th>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Artista</center></th>
+      <th scope="col"><center>Album</center></th>
+      <th scope="col"><center>Fecha</center></th>
+      <th scope="col"><center>Link de Imagen</center></th>
+      <th scope="col"><center>Link de Spotify</center></th>
+      <th scope="col"><center>Link de Youtube</center></th>
+    </tr>`
+    for (var i in res){
+      console.log(res[i])
+      var letras = res[i].youtube.length
+      var letrasim = res[i].imagen.length
+      var letrassp = res[i].spotify.length
+        if(res[i].id==id){
+          boton.innerHTML = `<h3><strong><pre>    ${id}    Canción: ${res[i].nombre}
+        
+          Artista: ${res[i].artista}        <img src="${res[i].imagen}" class="img-fluid" height="200" width="200">            <textarea class="content" id="comentarios" rows="2" cols="25" placeholder="Escribe un comentario para ${res[i].nombre}"></textarea>\n                                                 <button onclick="ComentarCancion(${res[i].id})" type="button"class="btn btn-success">Comentar</button>
+                                                                                       
+          Album: ${res[i].album} (${res[i].fecha})
+
+          <iframe src="${res[i].spotify}" width="200" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+          Link a Youtube:  <a href='${res[i].youtube}'>${res[i].youtube}</a>
+          <iframe width="560" height="315" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        
+          ><button id="id" type="button" value="${res[i].id}" onclick="ModificarCancion(${res[i].id})" class="btn btn-success" > Modificar </button>
+        
+          ><button id="id" type="button" value="${res[i].id}" onclick="EliminarCancion(${res[i].id})" class="btn btn-success" > Eliminar </button>
+          </pre></strong></h3>`
+          tbody.innerHTML +=
+          `<tr>
+        <th><center>${res[i].id}</center></th>
+        <th><center>${res[i].nombre}</center></th>
+        <th><center>${res[i].artista}</center></th>
+        <th><center>${res[i].album}</center></th>
+        <th><center>${res[i].fecha}</center></th>
+        <th>${res[i].imagen}</th>
+        <th>${res[i].spotify}</th>
+        <th>${res[i].youtube}</th>
+      </tr>`
+      penultimop.innerHTML += 
+      `<h3><strong>Comentarios</strong></h3>
+      <table class="table">
+          <thead id="theadp">
+
+          </thead>
+          <tr>
+      <th scope="col"><center>No.</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Comentario</center></th>
+      <th scope="col"><center>Eliminar</center></th>
+    </tr>
+
+          <tbody id="tbodyp">
+          </tbody>
+        </table>`
+      for(var s in rescomment){
+       
+        tbodyp = document.querySelector('#tbodyp')
+        tbodyp.innerHTML +=
+        `<tr>
+        <th><center>${rescomment[s].No}</center></th>
+        <th><center>${rescomment[s].username}</center></th>
+        <th><center>${rescomment[s].comentario}</center></th>
+        <th><center><button id="No" value="${rescomment[s].No}" onclick="DeleteComment(${rescomment[s].No})" type="button" class="btn btn-success">Eliminar</button></center></th>
+      </tr>`
+      }
+        }
+      }
+        }) 
+      })
+    }
+
+    function ModificarCancion(id){
+      var boton = document.querySelector('#boton')
+      var seleccionar = document.querySelector('#seleccionar')
+      var thead = document.querySelector('#thead')
+      var tbody = document.querySelector('#tbody')
+      var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+      seleccionar.innerHTML=""
+      tbody.innerHTML = ""
+      thead.innerHTML=""
+
+      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      .then(response => response.json())
+      .catch(error => {
+        console.log(error)
+      })
+      .then(res => {
+        thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Artista</center></th>
+      <th scope="col"><center>Album</center></th>
+      <th scope="col"><center>Fecha</center></th>
+      <th scope="col"><center>Link de Imagen</center></th>
+      <th scope="col"><center>Link de Spotify</center></th>
+      <th scope="col"><center>Link de Youtube</center></th>
+      <th scope="col"><center>Cancelar</center></th>
+    </tr>`
+
+    for (var i in res){
+      console.log(res[i])
+      var letras = res[i].youtube.length
+      if(res[i].id==id){
+        boton.innerHTML = `<h3><strong><pre> Canción: ${res[i].nombre}
+        
+        Artista: ${res[i].artista}        <img src="${res[i].imagen}" class="img-fluid" height="200" width="200">
+
+        Album: ${res[i].album} (${res[i].fecha})
+
+        <iframe src="${res[i].spotify}" width="200" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+        Link a Youtube:  <a href='${res[i].youtube}'>${res[i].youtube}</a>
+        
+        ><button id="id" type="button" value="${res[i].id}" onclick="ConfirmChange()" class="btn btn-success" > Modificar </button>
+        
+        </pre></strong></h3>`
+        tbody.innerHTML +=
+        `<tr>
+        <th><center><input id="nombre" type="text" class="form-control" placeholder="New Name" value=""/></center></th>
+        <th><center><input id="artista" type="text" class="form-control" placeholder="New Artist" value=""/></center></th>
+        <th><center><input id="album" type="text" class="form-control" placeholder="New Album" value=""/></center></th>
+        <th><center><input id="fecha" type="text" class="form-control" placeholder="New Date" value=""/></center></th>
+        <th><center><input id="imagen" type="text" class="form-control" placeholder="New Image Link" value=""/></center></th>
+        <th><center><input id="spotify" type="text" class="form-control" placeholder="New Spotify Link" value=""/></center></th>
+        <th><center><input id="youtube" type="text" class="form-control" placeholder="New Youtube Link" value=""/></center></th>
+        <th><center><button id="id" type="button" value="${res[i].id}" onclick="VerCancion(${res[i].id})" class="btn btn-success" > Cancelar </button></center></th>
+      </tr>`
+      }
+    }
+      })      
+    }
+
+    function ConfirmChange(){
+      var id = document.querySelector('#id').value
+      var nombre = document.querySelector('#nombre').value
+      var artista = document.querySelector('#artista').value
+      var album = document.querySelector('#album').value
+      var fecha = document.querySelector('#fecha').value
+      var imagen = document.querySelector('#imagen').value
+      var spotify = document.querySelector('#spotify').value
+      var youtube= document.querySelector('#youtube').value
+
+      var objeto = {
+        'nombre':nombre,
+        'artista':artista,
+        'album':album,
+        'fecha':fecha,
+        'imagen':imagen,
+        'spotify':spotify,
+        'youtube':youtube,
+        'id':id
+      }
+      console.log(objeto)
+
+      fetch(`http://127.0.0.1:3000/Canciones/${id}`,{
+        method: 'PUT',
+        body: JSON.stringify(objeto),
+        headers:{
+          'Content-Type':'application/json'
+        }
+      }).then(res => res.json())
+      .catch(err => {
+        console.error('Error:', err)
+        alert("Ocurrio un error, ver la consola")
+      }).then(response => {
+        console.log(response)
+        alert(response.message)
+        VerCancion(id)
+      })
+
+
+    }
+
+    function EliminarCancion(id){
+      var boton = document.querySelector('#boton')
+      var seleccionar = document.querySelector('#seleccionar')
+      var thead = document.querySelector('#thead')
+      var tbody = document.querySelector('#tbody')
+      var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+      seleccionar.innerHTML=""
+      tbody.innerHTML = ""
+      thead.innerHTML=""
+
+      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      .then(response => response.json())
+      .catch(error => {
+        console.log(error)
+      })
+      .then(res => {
+        thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Artista</center></th>
+      <th scope="col"><center>Album</center></th>
+      <th scope="col"><center>Fecha</center></th>
+      <th scope="col"><center>Link de Imagen</center></th>
+      <th scope="col"><center>Link de Spotify</center></th>
+      <th scope="col"><center>Link de Youtube</center></th>
+      <th scope="col"><center>Cancelar</center></th>
+    </tr>`
+
+    for (var i in res){
+      console.log(res[i])
+      var letras = res[i].youtube.length
+      if(res[i].id==id){
+        boton.innerHTML = `<h3><strong><pre> Canción: ${res[i].nombre}
+        
+        Artista: ${res[i].artista}        <img src="${res[i].imagen}" class="img-fluid" height="200" width="200">
+
+        Album: ${res[i].album} (${res[i].fecha})
+
+        <iframe src="${res[i].spotify}" width="200" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+        Link a Youtube:  <a href='${res[i].youtube}'>${res[i].youtube}</a>
+        
+        ><button id="x" type="button" value="${res[i].id}" onclick="ConfirmDelete()" class="btn btn-success" > Eliminar </button>
+        
+        </pre></strong></h3>`
+        tbody.innerHTML +=
+        `<tr>
+        <th><center>${res[i].id}</center></th>
+        <th><center>${res[i].nombre}</center></th>
+        <th><center>${res[i].artista}</center></th>
+        <th><center>${res[i].album}</center></th>
+        <th><center>${res[i].fecha}</center></th>
+        <th><center>${res[i].imagen}</center></th>
+        <th><center>${res[i].spotify}</center></th>
+        <th><center>${res[i].youtube}</center></th>
+        <th><center><button id="id" type="button" value="${res[i].id}" onclick="VerCancion(${res[i].id})" class="btn btn-success" > Cancelar </button></center></th>
+      </tr>`
+      }
+    }
+      }) 
+      
+    }
+
+    function ConfirmDelete(){
+      var id = document.querySelector('#id').value 
+      fetch(`http://127.0.0.1:3000/Canciones/${id}`,{
+        method: 'DELETE'
+      }).then(res => res.json())
+      .catch(error => {
+        console.error('Error:', error)
+      })
+      .then(response =>{
+        console.log('Success', response)
+        alert("Algo paso")
+        MostrarCanciones()
+      })
+
+    }
+
+    function DeleteComment(No){
+      fetch(`http://127.0.0.1:3000/Comentarios/${No}`,{
+        method: 'DELETE'
+      }).then(res => res.json())
+      .catch(error => {
+        console.error('Error:', error)
+      })
+      .then(response =>{
+        console.log('Success', response)
+        alert("Algo paso")
+        MostrarCanciones()
+      })
+
+
+    }
+
+    function ComentarCancion(id){
+      var boton = document.querySelector('#boton')
+      var seleccionar = document.querySelector('#seleccionar')
+      var thead = document.querySelector('#thead')
+      var tbody = document.querySelector('#tbody')
+      var textarea = document.querySelector('#comentarios').value
+      var objeto = {
+        'username': sessionStorage.username,
+        'comentario': textarea,
+        'id': id
+      }
+      console.log(objeto)
+      fetch('http://127.0.0.1:3000/Comentarios',{
+        method:'POST',
+        body: JSON.stringify(objeto),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .catch(e => {
+        console.error('Error:', e)
+        console.log("Ocurrio un error, ver la consola")
+      })
+      .then(res => {
+        console.log('Success:', res)
+      })
+      VerCancion(id)
+    }
+
+
+function MostrarUsuarios(){
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  boton.innerHTML="Usuarios Registrados<br><button id='pdf' type='button' onclick='PDFUsuarios()' class='btn btn-success'>Generar PDF</button>"
+  seleccionar.innerHTML="<button id='agregaradmin' type='button' onclick='RegistrarAdmin()' class='btn btn-success'>Crear Usuario Administrador</button>"
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  fetch('http://127.0.0.1:3000/Personas')
+  .then(response => response.json())
+  .catch(error =>{
+    console.log(error)
+  })
+  .then(res => {
+
+  thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Apellido</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Contraseña</center></th>
+      <th scope="col"><center>Tipo de Usuario</center></th>
+      <th scope="col"><center>Modificar</center></th>
+      <th scope="col"><center>Eliminar</center></th>
+    </tr>`
+
+    for (var i in res){
+      console.log(res[i])
+      tbody.innerHTML +=
+      `<tr>
+        <th><center>${res[i].name}</center></th>
+        <th><center>${res[i].lastname}</center></th>
+        <th><center>${res[i].username}</center></th>
+        <th><center>${res[i].password}</center></th>
+        <th><center>${res[i].tipo}</center></th>
+        <th><center><button id="${res[i].username}" type="button" value="${res[i].username}" onclick="ModificarUsuario(this)" class="btn btn-success" > Modificar </button></center></th>
+        <th><center><button id="${res[i].username}" type="button" value="${res[i].username}" onclick="EliminarUsuario(this)" class="btn btn-success"> Eliminar </button></center></th>
+      </tr>`
+    }
+  })
+
+}
+
+function PDFUsuarios(){
+  var doc = new jsPDF()
+  doc.text(20, 20, 'Usuarios Registrados');
+  var columns = ["Nombre", "Apellido", "Usuario", "Contraseña","Tipo de Usuario"]
+  var data = []
+  fetch('http://127.0.0.1:3000/Personas')
+  .then(response => response.json())
+  .catch(error =>{
+    console.log(error)
+  })
+  .then(res => {
+    for (var i in res){
+      console.log(res[i])
+      data.push([res[i].name,res[i].lastname,res[i].username,res[i].password,res[i].tipo]) 
+    }
+
+    for (var i in data){
+      console.log(data[i])
+    }
+
+    doc.autoTable(columns,data,{margin:{top:25}});
+    
+    doc.save("Usuarios.pdf")
+  })
+}
+
+function RegistrarAdmin(){
+
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+
+  seleccionar.innerHTML="<button id='confirmarmodificacion' type='button' onclick='AceptarCrearAdmin()' class='btn btn-success'>Crear Administrador</button>"
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+  boton.innerHTML = ""
+
+  thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Apellido</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Contraseña</center></th>
+      <th scope="col"><center>Tipo de Usuario</center></th>
+      <th scope="col"><center>Cancelar</center></th>
+    </tr>`
+
+    tbody.innerHTML +=
+        `<tr>
+        <th><center><input id="name" type="text" class="form-control" placeholder="New Name" value=""/></center></th>
+        <th><center><input id="lastname" type="text" class="form-control" placeholder="New Last Name" value=""/></center></th>
+        <th><center><input id="username" type="text" class="form-control" placeholder="New Username" value=""/></center></th>
+        <th><center><input id="password" type="text" class="form-control" placeholder="New Password" value=""/></center></th>
+        <th><center>administrador</center></th>
+        <th><center><button id="cancelar" type="button" value="" onclick="MostrarUsuarios()" class="btn btn-success" > Cancelar </button></center></th>
+      </tr>`
+
+
+
+}
+
+function AceptarCrearAdmin(){
+  var name = document.querySelector('#name').value
+  var lastname = document.querySelector('#lastname').value
+  var username = document.querySelector('#cancelar').value
+  var password = document.querySelector('#password').value
+  var tipo = "administrador"
+  var username = document.querySelector('#username').value
+
+  var objeto = {
+    'username': username,
+    'password': password,
+    'name': name,
+    'lastname': lastname,
+    'confirm': password,
+    'tipo': tipo
+  }
+  console.log(objeto)
+
+  fetch('http://127.0.0.1:3000/Personas',{
+    method:'POST',
+    body:JSON.stringify(objeto),
+    headers:{
+      'Content-type':'application/json'
+    }
+  }).then(res => res.json())
+  .catch(err => {
+    console.error('Error:', err )
+    alert("Ocurrio un error, ver la consola")
+  })
+  .then(response => {
+    console.log(response)
+    console.log(response.message)
+    MostrarUsuarios()
+  })
+}
+
+
+function ModificarUsuario(username){
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  
+  seleccionar.innerHTML="<button id='confirmarmodificacion' type='button' onclick='ConfirmarModificacion()' class='btn btn-success'>Confirmar Modificacion</button>"
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  fetch('http://127.0.0.1:3000/Personas')
+  .then(response => response.json())
+  .catch(error =>{
+    console.log(error)
+  })
+  .then(res => {
+
+  boton.innerHTML = `Modificando al Usuario: ${res.username}`
+
+  thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Apellido</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Contraseña</center></th>
+      <th scope="col"><center>Tipo de Usuario</center></th>
+      <th scope="col"><center>Cancelar</center></th>
+    </tr>`
+    for (var i in res){
+      console.log(res[i])
+      if(res[i].username==username.value){
+        boton.innerHTML = `Modificando al Usuario: ${res[i].username} ****El nombre de ususario ya no podra ser el mismo`
+        tbody.innerHTML +=
+        `<tr>
+        <th><center><input id="name" type="text" class="form-control" placeholder="New Name" value=""/></center></th>
+        <th><center><input id="lastname" type="text" class="form-control" placeholder="New Last Name" value=""/></center></th>
+        <th><center><input id="cancelar" type="text" class="form-control" placeholder="New Username" value=""/></center></th>
+        <th><center><input id="password" type="text" class="form-control" placeholder="New Password" value=""/></center></th>
+        <th><center>
+        
+        
+<form action="../../form-result.php" method="post" target="_blank">
+
+<p>
+  <input id="tipo" type="text" name="modelo" list="listademodelos">
+</p>
+</form>
+<datalist id="listademodelos">
+<option value="administrador">
+<option value="cliente">
+</datalist>
+        
+        </center></th>
+        <th><center><button id="username" type="button" value="${res[i].username}" onclick="MostrarUsuarios()" class="btn btn-success" > Cancelar </button></center></th>
+      </tr>
+  
+      <datalist id="lista>
+        <option value="administrador">
+        <option value="cliente">
+      </datalist>
+      `
+      }else{
+      tbody.innerHTML +=
+      `<tr>
+        <th><center>${res[i].name}</center></th>
+        <th><center>${res[i].lastname}</center></th>
+        <th><center>${res[i].username}</center></th>
+        <th><center>${res[i].password}</center></th>
+        <th><center>${res[i].tipo}</center></th>
+      </tr>`
+      }
+    }
+  })
+}
+
+function ConfirmarModificacion(){
+  var name = document.querySelector('#name').value
+  var lastname = document.querySelector('#lastname').value
+  var cancelar = document.querySelector('#cancelar').value
+  var password = document.querySelector('#password').value
+  var tipo = document.querySelector('#tipo').value
+  var username = document.querySelector('#username').value
+  var objeto = {
+    'name': name,
+    'lastname': lastname,
+    'username': cancelar,
+    'password': password,
+    'tipo': tipo,
+    'cancelar': username
+  }
+  console.log(objeto)
+
+  fetch(`http://127.0.0.1:3000/Personas/${username}`,{
+    method: 'PUT',
+    body:JSON.stringify(objeto),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+  .catch(err => {
+    console.error('Error:', err)
+    alert("Ocurrio un error, ver la consola")
+  }).then(response =>{
+    console.log(response)
+    alert(response.message)
+    MostrarUsuarios()
+  })
+}
+
+function EliminarUsuario(username){
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  
+  seleccionar.innerHTML="<button id='confirmareliminacion' type='button' onclick='ConfirmarEliminacion()' class='btn btn-success'>Confirmar Eliminacion</button>"
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  fetch('http://127.0.0.1:3000/Personas')
+  .then(response => response.json())
+  .catch(error =>{
+    console.log(error)
+  })
+  .then(res => {
+    
+  thead.innerHTML=
+    `<tr>
+      <th scope="col"><center>Nombre</center></th>
+      <th scope="col"><center>Apellido</center></th>
+      <th scope="col"><center>Usuario</center></th>
+      <th scope="col"><center>Contraseña</center></th>
+      <th scope="col"><center>Tipo de Usuario</center></th>
+      <th scope="col"><center>Cancelar</center></th>
+    </tr>`
+
+    for (var i in res){
+      console.log(res[i])
+      if(res[i].username==username.value){
+        boton.innerHTML = `Eliminando al Usuario: ${res[i].username}`
+        tbody.innerHTML +=
+        `<tr>
+        <th><center>${res[i].name}</center></th>
+        <th><center>${res[i].lastname}</center></th>
+        <th><center>${res[i].username}</center></th>
+        <th><center>${res[i].password}</center></th>
+        <th><center>${res[i].tipo}</center></th>
+        <th><center><button id="username" type="button" value="${res[i].username}" onclick="MostrarUsuarios()" class="btn btn-success" > Cancelar </button></center></th>
+      </tr>`
+
+      }else{
+      tbody.innerHTML +=
+      `<tr>
+        <th><center>${res[i].name}</center></th>
+        <th><center>${res[i].lastname}</center></th>
+        <th><center>${res[i].username}</center></th>
+        <th><center>${res[i].password}</center></th>
+        <th><center>${res[i].tipo}</center></th>
+      </tr>`
+      }
+    }
+  })
+}
+
+function ConfirmarEliminacion(){
+  var username = document.querySelector('#username').value
+  fetch(`http://127.0.0.1:3000/Personas/${username}`,{
+    method: 'DELETE'
+  }).then(res => res.json())
+  .catch(error => {
+    console.error('Error:', error)
+    alert("Ocurrio un error al consumir la API, revise la consola")
+  })
+.then(response =>{
+  console.log('Success', response)
+  alert("Algo paso")
+  MostrarUsuarios()
+})
+}
+
+function MostrarSolicitudes(){
+  var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  seleccionar.innerHTML=""
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  fetch('http://localhost:3000/Solicitudes')
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error)
+  })
+  .then(res =>{
+    boton.innerHTML="<h2>Solicitudes de Canciones</h2>"
+
+    thead.innerHTML =
+    `
+              <tr>
+                <th scope="col"><center>Nombre</center></th>
+                <th scope="col"><center>Artista</center></th>
+                <th scope="col"><center>Album</center></th>
+                <th scope="col"><center>Fecha</center></th>
+                <th scope="col"><center>Imagen</center></th>
+                <th scope="col"><center>Spotify</center></th>
+                <th scope="col"><center>Youtube</center></th>
+                <th scope="col"><center>Añadir?</center></th>
+              </tr>`
+
+              for (var i in res) {
+                console.log(res[i])
+                var letras = res[i].youtube.length
+                var embed=""
+                //console.log(res[i].youtube.charAt(17)+res[i].youtube.charAt(18)+res[i].youtube.charAt(19)+res[i].youtube.charAt(20)+res[i].youtube.charAt(21)+res[i].youtube.charAt(22)+res[i].youtube.charAt(23)+res[i].youtube.charAt(24)+res[i].youtube.charAt(25)+res[i].youtube.charAt(26)+res[i].youtube.charAt(27)+res[i].youtube.charAt(28))
+               // for(var l =17; l < letras;l++){
+                 // embed+=res[i].youtube.charAt(l)
+                //}
+                tbody.innerHTML += 
+                `<tr>
+                <th><center>${res[i].nombre}</center></th>
+                <th><center>${res[i].artista}</center></th>
+                <th><center>${res[i].album}</center></th>
+                <th><center>${res[i].fecha}</center></th>
+                <th><center><img src="${res[i].imagen}" class="img-fluid" height="50%" width="50%"> </center></th>
+                <th><center><iframe src="${res[i].spotify}" width="130" height="130" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
+                <th><center><a href='${res[i].youtube}'>${res[i].youtube}</a>
+                  <iframe width="460" height="215" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>
+                <th><center><pre><button onclick="Aceptar(this)" id="name" type="button" value="${res[i].nombre}" class="btn btn-success" > Aceptar </button>
+
+<button id="artista" type="button" value="${res[i].nombre}" onclick="Cancelar(this)" class="btn btn-success" > Cancelar </button></pre></center></th>
+                
+                </tr>`
+                //La imagen, el link de Spotify y el link de Youtube tienen un codigo especifico para agregarse
+                //En este caso solo necesitamos el atributo src de cada uno.
+            }
+  })
+}
+function Aceptar(name){
+  fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`)
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error)
+  })
+  .then(res => {
+
+    for(var i in res){
+      var nombre = res[i].nombre
+      var artista = res[i].artista
+      var album = res[i].album
+      var fecha = res[i].fecha
+      var imagen = res[i].imagen
+      var spotify = res[i].spotify
+      var youtube = res[i].youtube
+    }
+
+    var objeto = {
+      'nombre': nombre,
+      'artista': artista,
+      'album': album,
+      'fecha': fecha,
+      'imagen': imagen,
+      'spotify': spotify,
+      'youtube': youtube
+    }
+    console.log(objeto)
+    fetch('http://127.0.0.1:3000/Canciones', {
+      method: 'POST',
+      body: JSON.stringify(objeto),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+      console.log("Ocurrio un error al consumir la API, revise la consola")
+    })
+    .then(response =>{
+      console.log('Success:', response);
+    })
+
+
+    fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`, {
+      method: 'DELETE'
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+      console.log("Ocurrio un error al consumir la API, revise la consola")
+      MostrarSolicitudes()
+
+    })
+    .then(response =>{
+      console.log('Success:', response.id);
+      MostrarSolicitudes()
+    }) 
+
+})
+MostrarSolicitudes()
+
+}
+
+function Cancelar(name){
+  fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`, {
+      method: 'DELETE'
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+      console.log("Ocurrio un error al consumir la API, revise la consola")
+    })
+    .then(response =>{
+      console.log('Success:', response);
+      MostrarSolicitudes()
+    }) 
+    MostrarSolicitudes()
+
+}
+
+
+function SolicitarCancion(){
+      var boton = document.querySelector('#boton')
+  var seleccionar = document.querySelector('#seleccionar')
+  var thead = document.querySelector('#thead')
+  var tbody = document.querySelector('#tbody')
+  var penultimop = document.querySelector('#penultimop')
+  penultimop.innerHTML=""
+  seleccionar.innerHTML=""
+  tbody.innerHTML = ""
+  thead.innerHTML=""
+
+  boton.innerHTML = `
+  <pre>     <h3><strong>Solicitar Cancion</strong></h3>
+    <h7>Nombre de la Cancion</h7><br><input id="nombre" type="text" class="form-control" placeholder="Nombre de la Cancion" value=""/>
+    <h7>Artista de la Cancion</h7><br><input id="artista" type="text" class="form-control" placeholder="Artista de la Cancion" value=""/>
+    <h7>Album de la Cancion</h7><br><input id="album" type="text" class="form-control" placeholder="Album de la Cancion" value=""/>
+    <h7>Fecha de la Cancion</h7><br><input id="fecha" type="text" class="form-control" placeholder="Fecha de Lanzamiento" value=""/>
+    <h7>Link de la Imagen de la Cancion</h7><br><input id="imagen" type="text" class="form-control" placeholder="Link de imagen de la Cancion" value=""/>
+    <h7>Link de Spotify(en formato embed)</h7><br><input id="spotify" type="text" class="form-control" placeholder="Link de Spotify de la Cancion (en formato embed)" value=""/>
+    <h7>Link de Youtube(en formato embed)</h7><br><input id="youtube" type="text" class="form-control" placeholder="Link de Youtube de la Cancion (en formato embed)" value=""/>
+    <button id="aceptar" type="button" value="" onclick="EnviarSolicitud()" class="btn btn-success" > Hacer Solicitud </button>
+    </pre>  
+  `
+
+    }
+
+    function EnviarSolicitud(){
+      var nombre = document.querySelector('#nombre').value
+      var artista = document.querySelector('#artista').value
+      var album = document.querySelector('#album').value
+      var fecha = document.querySelector('#fecha').value
+      var imagen = document.querySelector('#imagen').value
+      var spotify = document.querySelector('#spotify').value
+      var youtube = document.querySelector('#youtube').value
+
+      var objeto= {
+        'nombre':nombre,
+        'artista':artista,
+        'album':album,
+        'fecha':fecha,
+        'imagen':imagen,
+        'spotify':spotify,
+        'youtube':youtube
+      }
+      console.log(objeto)
+
+      fetch('http://127.0.0.1:3000/Solicitudes', {
+            method: 'POST',
+            body: JSON.stringify(objeto),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+            }).then(res => res.json())
+            .catch(error => {
+                console.error('Error:', error)
+                console.log("Ocurrio un error al consumir la API, revise la consola")
+            })
+            .then(response =>{
+                console.log('Success:', response.id)
+                alert("Se agrego la solicitud")
+            }) 
+
+
+            MostrarSolicitudes()
+
+    }
+
+function Deslogearse(){
+  localStorage.clear()
+  sessionStorage.clear()
+  location.href =  "Inicial.html"
+}
+
+
+
+</script>
+</body>
+</html>
