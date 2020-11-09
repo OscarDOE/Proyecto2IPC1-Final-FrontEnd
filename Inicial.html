@@ -23,7 +23,7 @@
       
         <header>
           <image class="circular--square" src="imagen.png" >
-			Song Playlist's
+			Song Playlist's**Quitate los audifonos**
 		</header>
     </div>
     <!-- end header -->
@@ -33,11 +33,13 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+     <embed id="music" title="LATA" src="Carry On.mp3" autocapitalize="false" autostart="true" loop="true" volume="10" width="0" height="0"> </embed> 
+
       
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav mr-auto col-sm-3 col-md-3">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a onclick="Home()" class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a  onclick="Acerca()" class="nav-link" href="#Acerca"> Acerca de</a>
@@ -56,22 +58,40 @@
     <!-- content -->
 
     <div class="container-fluid">
-     <embed id="music" title="LATA" src="Carry On.mp3" autocapitalize="false" autostart="true" loop="true" volume="10" width="0" height="0"> </embed> 
         <div class="content row">
-			<div id="left" class="col-md-2">left sidebar</div>
-			<div id="center" class="col-md-8 text-center">content</div>
-			<div id="right" class="col-md-2">Right Sidebar</div>
+			<div id="left" class="col-md-2">BAJALE </div>
+			<div id="center" class="col-md-8 text-center">VOLUMEN</div>
+			<div id="right" class="col-md-2">PERO YAA!!!</div>
 			
         </div>
         <p id="p" class="custab" ></p>
     </div>
 <script>
 
+
+  function Home(){
+
+    var left = document.querySelector('#left')
+   var center = document.querySelector('#center')
+   var right = document.querySelector('#right')
+   var p = document.querySelector('#p')
+   var l = document.querySelector("p")
+  left.innerHTML= "BAJALE"
+
+   l.innerHTML ="QUIERO RECALCAR QUE PARA ESTE PUNTO NO ENTENDIA NADA DE COMO HACERLO, FUE EL PRINCIPIO"
+
+
+   
+   
+   center.innerHTML= "VOLUMEN "
+   right.innerHTML= "PERO YAA!!! "
+
+  }
+
 function Acerca(){
 
   var left = document.querySelector('#left')
   left.innerHTML= "NO SE "
-  document.getElementsByTagName("embed")[0].setAttribute('src','Strange Days.mp3');
    
    var center = document.querySelector('#center')
    var right = document.querySelector('#right')
