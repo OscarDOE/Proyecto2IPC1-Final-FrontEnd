@@ -123,7 +123,7 @@ function MostrarPerfil(){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch(`http://127.0.0.1:3000/Personas/${sessionStorage.username}`)
+  fetch(`https://musicaoscaroliva.herokuapp.com//Personas/${sessionStorage.username}`)
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -165,7 +165,7 @@ function ModificarUsuario(username){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch(`http://127.0.0.1:3000/Personas/${sessionStorage.username}`)
+  fetch(`https://musicaoscaroliva.herokuapp.com//Personas/${sessionStorage.username}`)
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -213,7 +213,7 @@ function ConfirmarModificacion(){
   }
   console.log(objeto)
 
-  fetch(`http://127.0.0.1:3000/Personas/${sessionStorage.username}`,{
+  fetch(`https://musicaoscaroliva.herokuapp.com//Personas/${sessionStorage.username}`,{
     method: 'PUT',
     body:JSON.stringify(objeto),
     headers:{
@@ -240,7 +240,7 @@ function MiPlaylist(){
   penultimop.innerHTML=""
   tbody.innerHTML = ""
   var numero = sessionStorage.numero
-  fetch(`http://localhost:3000/PlayList/${numero}`)
+  fetch(`https://musicaoscaroliva.herokuapp.com//PlayList/${numero}`)
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -297,7 +297,7 @@ function EliminarDeLista(p){
     'id': id
   }
 console.log(id)
-  fetch(`http://127.0.0.1:3000/PlayList/${numero}`,{
+  fetch(`https://musicaoscaroliva.herokuapp.com//PlayList/${numero}`,{
     method:'DELETE',
     body: JSON.stringify(objeto),
     headers:{
@@ -327,7 +327,7 @@ function MostrarCanciones(){
   penultimop.innerHTML=""
  
             tbody.innerHTML = ""
-            fetch('http://localhost:3000/Canciones')
+            fetch('https://musicaoscaroliva.herokuapp.com//Canciones')
             .then(response => response.json())
             .catch(error => {
             console.log(error)
@@ -377,7 +377,7 @@ function AgregarAPlayList(id){
     'id': id,
     'numero': numero
   } 
-  fetch(`http://127.0.0.1:3000/PlayList/${numero}`,{
+  fetch(`https://musicaoscaroliva.herokuapp.com//PlayList/${numero}`,{
     method:'POST',
     body: JSON.stringify(objeto),
     headers:{
@@ -408,13 +408,13 @@ function VerCancion(id){
       penultimop.innerHTML=""
 
 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`)
       .then(response => response.json())
       .catch(error => {
         console.log(error)
       })
       .then(res => {
-        fetch(`http://127.0.0.1:3000/Comentarios/${id}`)
+        fetch(`https://musicaoscaroliva.herokuapp.com//Comentarios/${id}`)
         .then(responsecomment => responsecomment.json())
         .catch(e => {
           console.log(e)
@@ -485,7 +485,7 @@ function VerCancion(id){
         'id': id
       }
       console.log(objeto)
-      fetch('http://127.0.0.1:3000/Comentarios',{
+      fetch('https://musicaoscaroliva.herokuapp.com//Comentarios',{
         method:'POST',
         body: JSON.stringify(objeto),
         headers:{
@@ -514,7 +514,7 @@ function MostrarSolicitudes(){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://localhost:3000/Solicitudes')
+  fetch('https://musicaoscaroliva.herokuapp.com//Solicitudes')
   .then(response => response.json())
   .catch(error => {
     console.log(error)
@@ -601,7 +601,7 @@ function MostrarSolicitudes(){
         'youtube':youtube
       }
       console.log(objeto)
-      fetch('http://127.0.0.1:3000/Solicitudes', {
+      fetch('https://musicaoscaroliva.herokuapp.com//Solicitudes', {
             method: 'POST',
             body: JSON.stringify(objeto),
             headers:{

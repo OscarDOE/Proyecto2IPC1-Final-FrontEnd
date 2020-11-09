@@ -108,12 +108,11 @@
   }
 
   function AlCargar(){
-    //Tambien recordate que al hacer carga masiva, se cambio por ; y no ,
-   // if(sessionStorage.tipo == "administrador"){
+    if(sessionStorage.tipo == "administrador"){
 
-   // }else{
-     // location.href="PrincipalC.html"
-    //}
+    }else{
+      location.href="PrincipalC.html"
+    }
   }
 
 function MostrarPerfil(){
@@ -128,7 +127,7 @@ function MostrarPerfil(){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://127.0.0.1:3000/Personas')
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas')
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -171,7 +170,7 @@ function MostrarPerfil(){
   seleccionar.innerHTML = "<button id='cargar' type='button' onclick='cargarArchivo()' class='btn btn-success'> Cargar Canciones</button>" 
 
             tbody.innerHTML = ""
-            fetch('http://localhost:3000/Canciones')
+            fetch('https://musicaoscaroliva.herokuapp.com//Canciones')
             .then(response => response.json())
             .catch(error => {
             console.log(error)
@@ -277,7 +276,7 @@ function MostrarPerfil(){
              }
             console.log(objeto)
             //Aplicamos nuestro metodo magico con sus 3 metodos, then, catch, then
-            fetch('http://127.0.0.1:3000/Canciones', {
+            fetch('https://musicaoscaroliva.herokuapp.com//Canciones', {
             method: 'POST',
             body: JSON.stringify(objeto),
             headers:{
@@ -313,7 +312,7 @@ function MostrarPerfil(){
       var data = []
       var data2 = []
 
-      fetch('http://localhost:3000/Canciones')
+      fetch('https://musicaoscaroliva.herokuapp.com//Canciones')
       .then(response => response.json())
       .catch(error => {
       console.log(error)
@@ -362,13 +361,13 @@ function MostrarPerfil(){
       thead.innerHTML=""
       penultimop.innerHTML=""
 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`)
       .then(response => response.json())
       .catch(error => {
         console.log(error)
       })
       .then(res => {
-        fetch(`http://127.0.0.1:3000/Comentarios/${id}`)
+        fetch(`https://musicaoscaroliva.herokuapp.com//Comentarios/${id}`)
         .then(responsecomment => responsecomment.json())
         .catch(e => {
           console.log(e)
@@ -461,7 +460,7 @@ function MostrarPerfil(){
       tbody.innerHTML = ""
       thead.innerHTML=""
 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`)
       .then(response => response.json())
       .catch(error => {
         console.log(error)
@@ -534,7 +533,7 @@ function MostrarPerfil(){
       }
       console.log(objeto)
 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`,{
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`,{
         method: 'PUT',
         body: JSON.stringify(objeto),
         headers:{
@@ -564,7 +563,7 @@ function MostrarPerfil(){
       tbody.innerHTML = ""
       thead.innerHTML=""
 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`)
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`)
       .then(response => response.json())
       .catch(error => {
         console.log(error)
@@ -619,7 +618,7 @@ function MostrarPerfil(){
 
     function ConfirmDelete(){
       var id = document.querySelector('#id').value 
-      fetch(`http://127.0.0.1:3000/Canciones/${id}`,{
+      fetch(`https://musicaoscaroliva.herokuapp.com//Canciones/${id}`,{
         method: 'DELETE'
       }).then(res => res.json())
       .catch(error => {
@@ -634,7 +633,7 @@ function MostrarPerfil(){
     }
 
     function DeleteComment(No){
-      fetch(`http://127.0.0.1:3000/Comentarios/${No}`,{
+      fetch(`https://musicaoscaroliva.herokuapp.com//Comentarios/${No}`,{
         method: 'DELETE'
       }).then(res => res.json())
       .catch(error => {
@@ -661,7 +660,7 @@ function MostrarPerfil(){
         'id': id
       }
       console.log(objeto)
-      fetch('http://127.0.0.1:3000/Comentarios',{
+      fetch('https://musicaoscaroliva.herokuapp.com//Comentarios',{
         method:'POST',
         body: JSON.stringify(objeto),
         headers:{
@@ -692,7 +691,7 @@ function MostrarUsuarios(){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://127.0.0.1:3000/Personas')
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas')
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -732,7 +731,7 @@ function PDFUsuarios(){
   doc.text(20, 20, 'Usuarios Registrados');
   var columns = ["Nombre", "Apellido", "Usuario", "Contraseña","Tipo de Usuario"]
   var data = []
-  fetch('http://127.0.0.1:3000/Personas')
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas')
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -809,7 +808,7 @@ function AceptarCrearAdmin(){
   }
   console.log(objeto)
 
-  fetch('http://127.0.0.1:3000/Personas',{
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas',{
     method:'POST',
     body:JSON.stringify(objeto),
     headers:{
@@ -840,7 +839,7 @@ function ModificarUsuario(username){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://127.0.0.1:3000/Personas')
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas')
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -922,7 +921,7 @@ function ConfirmarModificacion(){
   }
   console.log(objeto)
 
-  fetch(`http://127.0.0.1:3000/Personas/${username}`,{
+  fetch(`https://musicaoscaroliva.herokuapp.com//Personas/${username}`,{
     method: 'PUT',
     body:JSON.stringify(objeto),
     headers:{
@@ -951,7 +950,7 @@ function EliminarUsuario(username){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://127.0.0.1:3000/Personas')
+  fetch('https://musicaoscaroliva.herokuapp.com//Personas')
   .then(response => response.json())
   .catch(error =>{
     console.log(error)
@@ -998,7 +997,7 @@ function EliminarUsuario(username){
 
 function ConfirmarEliminacion(){
   var username = document.querySelector('#username').value
-  fetch(`http://127.0.0.1:3000/Personas/${username}`,{
+  fetch(`https://musicaoscaroliva.herokuapp.com//Personas/${username}`,{
     method: 'DELETE'
   }).then(res => res.json())
   .catch(error => {
@@ -1023,7 +1022,7 @@ function MostrarSolicitudes(){
   tbody.innerHTML = ""
   thead.innerHTML=""
 
-  fetch('http://localhost:3000/Solicitudes')
+  fetch('https://musicaoscaroliva.herokuapp.com//Solicitudes')
   .then(response => response.json())
   .catch(error => {
     console.log(error)
@@ -1073,7 +1072,7 @@ function MostrarSolicitudes(){
   })
 }
 function Aceptar(name){
-  fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`)
+  fetch(`https://musicaoscaroliva.herokuapp.com//Solicitudes/${name.value}`)
   .then(response => response.json())
   .catch(error => {
     console.log(error)
@@ -1100,7 +1099,7 @@ function Aceptar(name){
       'youtube': youtube
     }
     console.log(objeto)
-    fetch('http://127.0.0.1:3000/Canciones', {
+    fetch('https://musicaoscaroliva.herokuapp.com//Canciones', {
       method: 'POST',
       body: JSON.stringify(objeto),
       headers:{
@@ -1116,7 +1115,7 @@ function Aceptar(name){
     })
 
 
-    fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`, {
+    fetch(`https://musicaoscaroliva.herokuapp.com//Solicitudes/${name.value}`, {
       method: 'DELETE'
     }).then(res => res.json())
     .catch(error => {
@@ -1136,7 +1135,7 @@ MostrarSolicitudes()
 }
 
 function Cancelar(name){
-  fetch(`http://127.0.0.1:3000/Solicitudes/${name.value}`, {
+  fetch(`https://musicaoscaroliva.herokuapp.com//Solicitudes/${name.value}`, {
       method: 'DELETE'
     }).then(res => res.json())
     .catch(error => {
@@ -1198,7 +1197,7 @@ function SolicitarCancion(){
       }
       console.log(objeto)
 
-      fetch('http://127.0.0.1:3000/Solicitudes', {
+      fetch('https://musicaoscaroliva.herokuapp.com//Solicitudes', {
             method: 'POST',
             body: JSON.stringify(objeto),
             headers:{
