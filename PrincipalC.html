@@ -281,7 +281,7 @@ function MiPlaylist(){
                 <th><center>${res[i].album}</center></th>
                 <th><center>${res[i].fecha}</center></th>
                 <th><center><img src="${res[i].imagen}" class="img-fluid" height="50%" width="50%"> </center></th>
-                <th><center><iframe src="${res[i].spotify}" width="130" height="130" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
+                <th><center><iframe src="${res[i].spotify}" width="80" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
                 <th><center><a href='${res[i].youtube}'>${res[i].youtube}</a>
                   <iframe width="460" height="215" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>
                   <th><center><button id="aceptar" type="button" value="${res[i].id}" onclick="EliminarDeLista(this)" class="btn btn-success" > Eliminar de la PlayList </button></center></th>
@@ -364,7 +364,7 @@ function MostrarCanciones(){
                 <th><center>${res[i].album}</center></th>
                 <th><center>${res[i].fecha}</center></th>
                 <th><center><img src="${res[i].imagen}" class="img-fluid" height="50%" width="50%"> </center></th>
-                <th><center><iframe src="${res[i].spotify}" width="130" height="130" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
+                <th><center><iframe src="${res[i].spotify}" width="80" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center></th>
                 <th><center><a href='${res[i].youtube}'>${res[i].youtube}</a>
                 <iframe width="330" height="185" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>
                 <th><center><button id="${res[i].id}" type="button" value="${res[i].id}" onclick="AgregarAPlayList(${res[i].id})" class="btn btn-success">Agregar a PlayList</button></center></th>
@@ -441,7 +441,7 @@ function VerCancion(id){
                                                                                        
           Album: ${res[i].album} (${res[i].fecha})
 
-          <iframe src="${res[i].spotify}" width="200" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+          <iframe src="${res[i].spotify}" width="300" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 
           Link a Youtube:  <a href='${res[i].youtube}'>${res[i].youtube}</a>
           <iframe width="560" height="315" src="${res[i].youtube}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
