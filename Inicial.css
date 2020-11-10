@@ -5,8 +5,9 @@
 	text-align: center;
 }
 
-.content{
-	background-color: rgb(183, 107, 89);
+.content,p{
+    background-color: rgb(183, 107, 89);
+    background-repeat: repeat-x;
 	color:rgb(0, 0, 0);
 }
 
